@@ -1,4 +1,6 @@
-﻿namespace RequestProcessingPipeline
+﻿using RequestProcessingPipeline.Middlewares;
+
+namespace RequestProcessingPipeline.Extensions
 {
     public static class FromTenThousandToFifteenThousandExtensions
     {

@@ -1,6 +1,6 @@
-﻿using RequestProcessingPipeline.RequestProcessingPipeline;
+﻿using RequestProcessingPipeline;
 
-namespace RequestProcessingPipeline
+namespace RequestProcessingPipeline.Extensions
 {
     public static class FromHundredToThousandExtensions
     {

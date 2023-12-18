@@ -1,4 +1,4 @@
-﻿namespace RequestProcessingPipeline
+﻿namespace RequestProcessingPipeline.Middlewares
 {
     public class FromTenThousandToFiftyThousandMiddleware
     {
@@ -12,43 +12,35 @@
         public async Task Invoke(HttpContext context)
         {
             string? token = context.Request.Query["number"];
-
             try
             {
                 int number = Convert.ToInt32(token);
                 number = Math.Abs(number);
-
-                if (number < 10000)
+                if (number < 11000 || number > 19999)
                 {
                     await _next.Invoke(context);
                 }
-                else if (number > 50000)
-                {
-                    await context.Response.WriteAsync("Number greater than fifty thousand");
-                }
                 else
                 {
-                    string[] Tens = { "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
-                    if (number / 10_000 == 10)
+                    string[] Numbers = { "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
+
+                    if (number % 1000 == 0)
                     {
-                        await context.Response.WriteAsync("Your number is one hundred thousand");
-                    }
-                    else if (number % 10_000 == 0)
-                    {
-                        await context.Response.WriteAsync("Your number is " + Tens[number / 10_000 - 2] + " thousand");
+                        await context.Response.WriteAsync("Your number is " + Numbers[number / 1000 - 11] + " thousand");
                     }
                     else
                     {
                         await _next.Invoke(context);
                         string? result = string.Empty;
                         result = context.Session.GetString("number");
-                        await context.Response.WriteAsync("Your number is " + Tens[number / 10_000 - 2] + " " + result);
+                        await context.Response.WriteAsync("Your number is " + Numbers[number / 1000 - 11] + " thousand " + result);
                     }
                 }
+
             }
             catch (Exception)
             {
-                await context.Response.WriteAsync("Incorrect parameter");
+                await context.Response.WriteAsync("Incorrect parameter 11k to 19k");
             }
         }
     }
